@@ -1,6 +1,16 @@
 #include <stdio.h>
 
-/* Torre: chamada recursiva reduz passos até zerar, imprimindo a direção atual. */
+/* Programa que demonstra movimentos básicos de peças de xadrez.
+ *
+ * Torre, Bispo e Rainha são movidos através de funções recursivas,
+ * evidenciando a chamada repetida enquanto há casas a percorrer.
+ * O Cavalo utiliza loops aninhados com fluxo controlado via continue/break
+ * para simular o deslocamento em "L".
+ */
+
+/* Torre: chamada recursiva imprime "Direita" até a contagem zerar.
+ * passosRestantes controla o número de iterações recursivas ainda pendentes.
+ */
 void moverTorre(int passosRestantes) {
     if (passosRestantes <= 0) {
         return;
@@ -10,7 +20,10 @@ void moverTorre(int passosRestantes) {
     moverTorre(passosRestantes - 1);
 }
 
-/* Bispo: combina recursão com loops aninhados para formar o movimento diagonal. */
+/* Bispo: para cada chamada recursiva, loops aninhados geram a combinação
+ * vertical/horizontal que resulta no movimento diagonal "Cima Direita".
+ * passosRestantes mantém quantas diagonais ainda precisam ser executadas.
+ */
 void moverBispo(int passosRestantes) {
     if (passosRestantes <= 0) {
         return;
@@ -30,7 +43,9 @@ void moverBispo(int passosRestantes) {
     moverBispo(passosRestantes - 1);
 }
 
-/* Rainha: chamada recursiva simples que caminha sempre para a esquerda. */
+/* Rainha: chamada recursiva simples que move a peça para a esquerda.
+ * passosRestantes marca a quantidade de casas que faltam.
+ */
 void moverRainha(int passosRestantes) {
     if (passosRestantes <= 0) {
         return;
@@ -57,17 +72,24 @@ int main(void) {
     moverRainha(rainhaPassos);
     printf("\n");
 
-    /* Cavalo: loops aninhados controlam dois passos para cima e um para a direita. */
+    /* Cavalo: loops aninhados controlam dois passos para cima e um para a direita.
+     * cavaloTotalMovimentos define o total de impressões e cavaloMovimentosEmitidos
+     * acompanha quantos movimentos já foram realizados.
+     */
     const int cavaloTotalMovimentos = 3;
     int cavaloMovimentosEmitidos = 0;
 
     printf("Cavalo:\n");
     for (int passosVerticais = 0; passosVerticais <= 2; ++passosVerticais) {
         for (int passosHorizontais = 0; passosHorizontais <= 1; ++passosHorizontais) {
+            /* Se já percorremos as três casas (duas verticais, uma horizontal), encerramos. */
             if (cavaloMovimentosEmitidos >= cavaloTotalMovimentos) {
                 break;
             }
 
+            /* Enquanto passosVerticais for menor que 2, garantimos a impressão de "Cima".
+             * O segundo loop se repete apenas uma vez graças ao break após emitir a direção.
+             */
             if (passosVerticais < 2) {
                 if (passosHorizontais > 0) {
                     continue;
@@ -78,6 +100,9 @@ int main(void) {
                 break;
             }
 
+            /* Ao atingir passosVerticais == 2, passamos a emitir o passo horizontal.
+             * Utilizamos continue para pular iterações que ainda não atingiram o índice desejado.
+             */
             if (passosHorizontais == 0) {
                 continue;
             }
