@@ -1,32 +1,95 @@
 #include <stdio.h>
 
-// Desafio de Xadrez - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de movimentação das peças de xadrez.
-// O objetivo é utilizar estruturas de repetição e funções para determinar os limites de movimentação dentro do jogo.
+/* Torre: chamada recursiva reduz passos até zerar, imprimindo a direção atual. */
+void moverTorre(int passosRestantes) {
+    if (passosRestantes <= 0) {
+        return;
+    }
 
-int main() {
-    // Nível Novato - Movimentação das Peças
-    // Sugestão: Declare variáveis constantes para representar o número de casas que cada peça pode se mover.
+    printf("Direita\n");
+    moverTorre(passosRestantes - 1);
+}
 
-    // Implementação de Movimentação do Bispo
-    // Sugestão: Utilize uma estrutura de repetição para simular a movimentação do Bispo em diagonal.
+/* Bispo: combina recursão com loops aninhados para formar o movimento diagonal. */
+void moverBispo(int passosRestantes) {
+    if (passosRestantes <= 0) {
+        return;
+    }
 
-    // Implementação de Movimentação da Torre
-    // Sugestão: Utilize uma estrutura de repetição para simular a movimentação da Torre para a direita.
+    const char *direcoesVerticais[] = {"Cima"};
+    const char *direcoesHorizontais[] = {"Direita"};
+    const int totalVerticais = 1;
+    const int totalHorizontais = 1;
 
-    // Implementação de Movimentação da Rainha
-    // Sugestão: Utilize uma estrutura de repetição para simular a movimentação da Rainha para a esquerda.
+    for (int indiceVertical = 0; indiceVertical < totalVerticais; ++indiceVertical) {
+        for (int indiceHorizontal = 0; indiceHorizontal < totalHorizontais; ++indiceHorizontal) {
+            printf("%s %s\n", direcoesVerticais[indiceVertical], direcoesHorizontais[indiceHorizontal]);
+        }
+    }
 
-    // Nível Aventureiro - Movimentação do Cavalo
-    // Sugestão: Utilize loops aninhados para simular a movimentação do Cavalo em L.
-    // Um loop pode representar a movimentação horizontal e outro vertical.
+    moverBispo(passosRestantes - 1);
+}
 
-    // Nível Mestre - Funções Recursivas e Loops Aninhados
-    // Sugestão: Substitua as movimentações das peças por funções recursivas.
-    // Exemplo: Crie uma função recursiva para o movimento do Bispo.
+/* Rainha: chamada recursiva simples que caminha sempre para a esquerda. */
+void moverRainha(int passosRestantes) {
+    if (passosRestantes <= 0) {
+        return;
+    }
 
-    // Sugestão: Implemente a movimentação do Cavalo utilizando loops com variáveis múltiplas e condições avançadas.
-    // Inclua o uso de continue e break dentro dos loops.
+    printf("Esquerda\n");
+    moverRainha(passosRestantes - 1);
+}
+
+int main(void) {
+    const int torrePassos = 5;
+    const int bispoPassos = 5;
+    const int rainhaPassos = 8;
+
+    printf("Torre:\n");
+    moverTorre(torrePassos);
+    printf("\n");
+
+    printf("Bispo:\n");
+    moverBispo(bispoPassos);
+    printf("\n");
+
+    printf("Rainha:\n");
+    moverRainha(rainhaPassos);
+    printf("\n");
+
+    /* Cavalo: loops aninhados controlam dois passos para cima e um para a direita. */
+    const int cavaloTotalMovimentos = 3;
+    int cavaloMovimentosEmitidos = 0;
+
+    printf("Cavalo:\n");
+    for (int passosVerticais = 0; passosVerticais <= 2; ++passosVerticais) {
+        for (int passosHorizontais = 0; passosHorizontais <= 1; ++passosHorizontais) {
+            if (cavaloMovimentosEmitidos >= cavaloTotalMovimentos) {
+                break;
+            }
+
+            if (passosVerticais < 2) {
+                if (passosHorizontais > 0) {
+                    continue;
+                }
+
+                printf("Cima\n");
+                ++cavaloMovimentosEmitidos;
+                break;
+            }
+
+            if (passosHorizontais == 0) {
+                continue;
+            }
+
+            printf("Direita\n");
+            ++cavaloMovimentosEmitidos;
+        }
+
+        if (cavaloMovimentosEmitidos >= cavaloTotalMovimentos) {
+            break;
+        }
+    }
 
     return 0;
 }
